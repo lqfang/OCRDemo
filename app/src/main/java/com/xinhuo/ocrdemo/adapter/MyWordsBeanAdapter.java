@@ -19,12 +19,16 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private Context context;
     private String data;
     private int num;
+    Map<String, String> map = new TreeMap<>();
+    KeyBean bean ;
+    private List<KeyBean> list = new ArrayList<>();
 
     public MyWordsBeanAdapter(Context context) {
         this.context = context;
@@ -33,6 +37,23 @@ public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolde
     public void setDatas(int count, String data) {
         this.num = count;
         this.data = data;
+
+        //解析数据
+        JSONObject jsonObject = null;
+        try {
+            jsonObject = new JSONObject(data);
+            Iterator<String> keys = jsonObject.keys();
+            while (keys.hasNext()) {
+                String key = keys.next();
+                String value = jsonObject.optString(key);
+
+                map.put(key, value);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.e("tag", " ===map1====>:" + map.toString());
+
         notifyDataSetChanged();
     }
 
@@ -46,31 +67,9 @@ public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolde
     //将数据与界面进行绑定的操作
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder viewHolder, final int position) {
-        //解析数据
-        JSONObject jsonObject = null;
-        Map<String, String> map = new HashMap<>();
-        try {
-            jsonObject = new JSONObject(data);
-            Iterator<String> keys = jsonObject.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                String value = jsonObject.optString(key);
-                viewHolder.mTextView.setText(key + " ：" + value);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-//        for(String key : map.keySet()){
-//            Log.e("tag", " ===Key====>:" + key);
-//            String value = map.get(key);
-//            viewHolder.mTextView.setText(key + " ：" + value);
-//        }
-//        for (Map.Entry<String, String> entry : map.entrySet()) {
-//            Log.e("tag", " ===Key====>:" + entry.getKey());
-//            Log.e("tag", " ===Value====>:" + entry.getValue());
-//            viewHolder.mTextView.setText(entry.getKey() + " ：" + entry.getValue());
-//        }
+        String key = list.get(position).getKey();
+        String value = list.get(position).getValue();
+        viewHolder.mTextView.setText(key + " ：" + value);
     }
 
     @Override

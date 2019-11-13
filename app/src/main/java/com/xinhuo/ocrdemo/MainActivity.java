@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mingle.widget.LoadingView;
@@ -57,6 +58,7 @@ public class MainActivity extends Activity {
     private ImageView ivBack;
     private ImageView ivImage; //显示拍照后的图片
     private TextView tv_txt;
+    private LinearLayout linearLayout;
 
     private boolean isShow = false;
 
@@ -75,6 +77,7 @@ public class MainActivity extends Activity {
         ivBack = (ImageView) findViewById(R.id.ivBack);
         ivImage = (ImageView) findViewById(R.id.iv_image);
         tv_txt = findViewById(R.id.tv_txt);
+        linearLayout = findViewById(R.id.ll_result);
 
         loadingView.setLoadingText("正在加载中...");
         loadingView.setVisibility(View.GONE);
@@ -86,6 +89,7 @@ public class MainActivity extends Activity {
 //        recyclerView.setAdapter(mAdapter);
 
         myWordsBeanAdapter = new MyWordsBeanAdapter(this);
+        recyclerView.setAdapter(myWordsBeanAdapter);
 
         // 默认进入打开相机
         isShow = true;
@@ -130,7 +134,7 @@ public class MainActivity extends Activity {
             if (!path.contains("file://")) {
                 path = "file://" + path;
             }
-            Log.i(TAG, "path===:" + path);
+            Log.i(TAG, "path====:" + path);
 
             // 开启加载动画
             loadingView.setVisibility(View.VISIBLE);
@@ -161,7 +165,7 @@ public class MainActivity extends Activity {
         String base64Data = jpeg + AppUtility.imgToBase64(bitmap);
         // 把字符串中"/",替换为"_",防止转json后"/"变成"\/"
         String base64Data1 = base64Data.replace("/", "_");
-        Log.i(TAG, "base64Data===:" + base64Data);
+        Log.i(TAG, "base64Data====:" + base64Data);
         if (!bitmap.isRecycled()) bitmap.recycle();
 
 //        getWordsResult(base64Data1);
@@ -237,7 +241,7 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
         String stringJson = jsonObject.toString().replace("_", "/");
-        Log.i(TAG, "jsonObject===:" + stringJson);
+        Log.i(TAG, "jsonObject====:" + stringJson);
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), stringJson);
         ApiModule.getInstance().getRetrofitService().getJson(requestBody).enqueue(new Callback<ResponseBody>() {
@@ -261,38 +265,39 @@ public class MainActivity extends Activity {
                             return;
                         }
 
-                        myWordsBeanAdapter.setDatas(words_result_num, words_result);
-                        recyclerView.setAdapter(myWordsBeanAdapter);
+//                        myWordsBeanAdapter.setDatas(words_result_num, words_result);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-//                    //解析数据
-//                    JSONObject jsonObject1 = null;
-//                    try {
-//                        jsonObject1 = new JSONObject(words_result);
-//                        Iterator<String> keys = jsonObject1.keys();
-//                        while (keys.hasNext()) {
-//                            String key = keys.next();
-//                            String value = jsonObject1.optString(key);
-//
-//                            Log.e(TAG, " ===key====>:" + key);
-//
-//                            tv_txt.setText(key + " ：" + value);
-//                        }
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-
-
 //                    // 当出现参数缺少等错误，弹出错误信息
 //                    int errCode = wordsBean.getErrCode();
 //                    if (errCode != 0) {
 //                        String errInfo = wordsBean.getErrInfo();
 //                        AppUtility.showToast(MyApp.getContext(), errInfo);
 //                    }
+
+                    //解析数据
+                    JSONObject jsonObject1 = null;
+                    try {
+                        jsonObject1 = new JSONObject(words_result);
+                        Iterator<String> keys = jsonObject1.keys();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = jsonObject1.optString(key);
+
+//                            tv_txt.setText(key + " ：" + value);
+                            Log.e("tag", " ===Key====>:" + key + " ===Value====>:" + value);
+
+                            TextView textview=new TextView(MainActivity.this);
+                            textview.setText(key + " ：" + value);
+                            // 动态添加控件
+                            linearLayout.addView(textview);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
 
