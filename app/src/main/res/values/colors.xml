@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="black_semi_transparent">#B2000000</color>
+    <color name="commen_bg">#48484a</color>
+    <color name="input_border_gray">#e5e5eb</color>
+    <color name="input_change">#e5e4e9</color>
+    <color name="input_text_color">#260c0f</color>
+    <color name="yellow_text_colot">#ffa427</color>
+    <color name="gray_text_color">#9999a3</color>
+    <color name="location_color">#b8b8bd</color>
+    <color name="address_color">#d3d3d5</color>
+    <color name="toolbar_text_color">#9c9ca0</color>
+    <color name="delete_color">#cacad4</color>
+    <color name="toolbar_text_color_other">#7a7a7a</color>
+    <color name="photopicker_green_light">#a5d143</color>
+    <color name="photopicker_selected_bg">#44000000</color>
+    <color name="photopicker_common_primary">#f3f3f3</color>
+    <color name="photopicker_text_40">#282828</color>
+    <color name="bg_text_selected">#9e9e9e</color>
+    <color name="divider_line">#ffeeeeee</color>
+    <color name="reply_text_color">#9999a5</color>
+    <color name="contents_text">#ffdddddd</color>
+    <color name="encode_view">#ffffffff</color>
+    <color name="help_button_view">#ffcccccc</color>
+    <color name="help_view">#ff404040</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="result_image_border">#ffffffff</color>
+    <color name="result_minor_text">#ffc0c0c0</color>
+    <color name="result_points">#c000ff00</color>
+    <color name="result_text">#ffffffff</color>
+    <color name="result_view">#b0000000</color>
+    <color name="sbc_header_text">#ff808080</color>
+    <color name="sbc_header_view">#ffffffff</color>
+    <color name="sbc_list_item">#fffff0e0</color>
+    <color name="sbc_layout_view">#ffffffff</color>
+    <color name="sbc_page_number_text">#ff000000</color>
+    <color name="sbc_snippet_text">#ff4b4b4b</color>
+    <color name="share_text">#ff000000</color>
+    <color name="share_bg">#4f000000</color>
+    <color name="share_view">#ffffffff</color>
+    <color name="status_view">#50000000</color>
+    <color name="status_text">#ffffffff</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_frame">#ffff7802</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#60000000</color>
+
+    <color name="list_divider_color">#dcdce4</color>
+    <color name="list_text_color">#3c3c46</color>
+    <color name="content_text_color">#4a4a4a</color>
+    <color name="list_name_text_color">#33333d</color>
+    <color name="list_summary_text_color">#9999a3</color>
+    <color name="list_summary_text">#545454</color>
+    <color name="list_select_color">#404040</color>
+
+    <color name="font_black_0">#000000</color>
+    <color name="font_black_content">#ff222222</color>
+    <color name="font_black_2">#ff333333</color>
+    <color name="font_black_content_disabled">#ffcacaca</color>
+    <color name="font_black_comment">#ff666666</color>
+    <color name="font_black_6">#ff666666</color>
+    <color name="font_black_9">#999999</color>
+    <color name="font_white">#ffffffff</color>
+    <color name="font_white_disable">#7fffffff</color>
+
+    <!--app-->
+    <color name="colorModulePrimary">#3F51B5</color>
+    <color name="colorModulePrimaryDark">#303F9F</color>
+    <color name="colorModuleAccent">#FF4081</color>
+
+    <!--常用色-->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="font_grey_a5a5a5">#a5a5a5</color>
+
+    <!--字体色-->
+    <color name="base_font_main_title">#313131</color>
+    <color name="base_font_main_content">#92919a</color>
+
+    <!--背景色-->
+    <color name="base_bg_loading">#99000000</color>
+    <color name="base_bg_btn_normal">#4c7af3</color>
+</resources>
