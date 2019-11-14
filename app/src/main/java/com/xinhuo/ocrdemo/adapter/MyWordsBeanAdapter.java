@@ -15,18 +15,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private Context context;
     private String data;
     private int num;
-    Map<String, String> map = new TreeMap<>();
     KeyBean bean ;
     private List<KeyBean> list = new ArrayList<>();
 
@@ -47,19 +43,15 @@ public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolde
                 String key = keys.next();
                 String value = jsonObject.optString(key);
 
+                bean = new KeyBean();
                 bean.setKey(key);
                 bean.setValue(value);
                 list.add(bean);
-
-                map.put(key, value);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.e("tag", " ===map1====>:" + map.toString());
-
-
-
+        Log.e("tag", " ===list====>:" + list.toString());
         notifyDataSetChanged();
     }
 
