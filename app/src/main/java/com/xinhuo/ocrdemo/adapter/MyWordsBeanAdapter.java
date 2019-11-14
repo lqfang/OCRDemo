@@ -20,6 +20,11 @@ import java.util.List;
 
 public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
+    /**
+     * words_result_num : 1
+     * words_result : [{"locale":{"right_bottom":[2227,1591],"left_top":[635,685]},"words":" TinMEal"}]
+     */
+
     private Context context;
     private String data;
     private int num;

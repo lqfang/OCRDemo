@@ -235,7 +235,7 @@ public class MainActivity extends Activity {
         Log.i(TAG, "jsonObject====:" + stringJson);
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), stringJson);
-        ApiModule.getInstance().getRetrofitService().getJson(requestBody).enqueue(new Callback<ResponseBody>() {
+        ApiModule.getInstance().getRetrofitService().getResponseResult(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 loadingView.setVisibility(View.GONE);
@@ -294,9 +294,11 @@ public class MainActivity extends Activity {
         });
     }
 
+    /**
+     * ResponseBody 处理成Json
+     */
     private String doJson(ResponseBody responseBody) {
         long contentLength = responseBody.contentLength();
-
         BufferedSource source = responseBody.source();
         try {
             source.request(Long.MAX_VALUE); // Buffer the entire body.
@@ -304,17 +306,15 @@ public class MainActivity extends Activity {
             e.printStackTrace();
         }
         Buffer buffer = source.buffer();
-
         Charset charset = UTF8;
         MediaType contentType = responseBody.contentType();
         if (contentType != null) {
             try {
                 charset = contentType.charset(UTF8);
             } catch (UnsupportedCharsetException e) {
-
+                e.printStackTrace();
             }
         }
-
         String result = "";
         // 拦截器，
         if (contentLength != 0) {

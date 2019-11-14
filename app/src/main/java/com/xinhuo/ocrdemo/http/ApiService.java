@@ -20,5 +20,5 @@ public interface ApiService {
     // 这个是得到 json字符串
     @Headers({"Content-Type: application/json"})
     @POST("ocr")
-    Call<ResponseBody> getJson(@Body RequestBody requestBody);
+    Call<ResponseBody> getResponseResult(@Body RequestBody requestBody);
 }

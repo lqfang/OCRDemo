@@ -6,8 +6,6 @@ public class KeyBean {
     private String value;
 
     public String getKey() {
-
-
             return key;
     }
 
