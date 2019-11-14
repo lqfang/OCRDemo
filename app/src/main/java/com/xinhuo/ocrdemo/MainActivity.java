@@ -21,9 +21,7 @@ import android.widget.TextView;
 
 import com.mingle.widget.LoadingView;
 import com.xinhuo.ocrdemo.adapter.MyAdapter;
-import com.xinhuo.ocrdemo.adapter.MyWordsAdapter;
 import com.xinhuo.ocrdemo.adapter.MyWordsBeanAdapter;
-import com.xinhuo.ocrdemo.entity.Words;
 import com.xinhuo.ocrdemo.entity.WordsResult;
 import com.xinhuo.ocrdemo.http.ApiModule;
 import com.xinhuo.ocrdemo.utils.AppUtility;
@@ -31,15 +29,10 @@ import com.xinhuo.ocrdemo.utils.AppUtility;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
-import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -170,8 +163,6 @@ public class MainActivity extends Activity {
 
 //        getWordsResult(base64Data1);
 
-//        getWords(base64Data1);
-
         getWordsBean(base64Data1);
     }
 
@@ -254,18 +245,31 @@ public class MainActivity extends Activity {
                     Log.e(TAG, " ===wordsBean====>:" + result);
                     //解析数据
                     JSONObject jsonObject = null;
-                    String words_result = "";
                     try {
                         jsonObject = new JSONObject(result);
                         int words_result_num = jsonObject.getInt("words_result_num");
-                        words_result = jsonObject.getString("words_result");
+                        String words_result = jsonObject.getString("words_result");
 
                         if (words_result_num == 0) {
                             AppUtility.showToast(MainActivity.this, "未识别出结果，请重试");
                             return;
                         }
 
-//                        myWordsBeanAdapter.setDatas(words_result_num, words_result);
+                        myWordsBeanAdapter.setDatas(words_result_num, words_result);
+
+                        //解析数据
+//                        jsonObject = new JSONObject(words_result);
+//                        Iterator<String> keys = jsonObject.keys();
+//                        while (keys.hasNext()) {
+//                            String key = keys.next();
+//                            String value = jsonObject.optString(key);
+//                            Log.e("tag", " ===Key====>:" + key + " ===Value====>:" + value);
+//
+//                            TextView textview = new TextView(MainActivity.this);
+//                            textview.setText(key + " ：" + value);
+//                            // 动态添加控件
+//                            linearLayout.addView(textview);
+//                        }
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -276,28 +280,6 @@ public class MainActivity extends Activity {
 //                        String errInfo = wordsBean.getErrInfo();
 //                        AppUtility.showToast(MyApp.getContext(), errInfo);
 //                    }
-
-                    //解析数据
-                    JSONObject jsonObject1 = null;
-                    try {
-                        jsonObject1 = new JSONObject(words_result);
-                        Iterator<String> keys = jsonObject1.keys();
-                        while (keys.hasNext()) {
-                            String key = keys.next();
-                            String value = jsonObject1.optString(key);
-
-//                            tv_txt.setText(key + " ：" + value);
-                            Log.e("tag", " ===Key====>:" + key + " ===Value====>:" + value);
-
-                            TextView textview=new TextView(MainActivity.this);
-                            textview.setText(key + " ：" + value);
-                            // 动态添加控件
-                            linearLayout.addView(textview);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
                 }
             }
 

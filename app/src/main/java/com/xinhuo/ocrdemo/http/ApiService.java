@@ -1,7 +1,6 @@
 package com.xinhuo.ocrdemo.http;
 
 
-import com.xinhuo.ocrdemo.entity.Words;
 import com.xinhuo.ocrdemo.entity.WordsResult;
 
 import okhttp3.RequestBody;
@@ -17,12 +16,6 @@ public interface ApiService {
     @Headers({"Content-Type: application/json"})
     @POST("ocr")
     Call<WordsResult> getResult(@Body RequestBody requestBody);
-
-
-    // 这个是得到 json字符串
-    @Headers({"Content-Type: application/json"})
-    @POST("ocr")
-    Call<Words> getWordsResult(@Body RequestBody requestBody);
 
     // 这个是得到 json字符串
     @Headers({"Content-Type: application/json"})

@@ -47,12 +47,18 @@ public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolde
                 String key = keys.next();
                 String value = jsonObject.optString(key);
 
+                bean.setKey(key);
+                bean.setValue(value);
+                list.add(bean);
+
                 map.put(key, value);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         Log.e("tag", " ===map1====>:" + map.toString());
+
+
 
         notifyDataSetChanged();
     }
