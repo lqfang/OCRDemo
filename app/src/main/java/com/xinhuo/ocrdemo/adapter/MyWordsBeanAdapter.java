@@ -26,37 +26,16 @@ public class MyWordsBeanAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolde
      */
 
     private Context context;
-    private String data;
     private int num;
-    KeyBean bean ;
     private List<KeyBean> list = new ArrayList<>();
 
     public MyWordsBeanAdapter(Context context) {
         this.context = context;
     }
 
-    public void setDatas(int count, String data) {
+    public void setDatas(int count, List<KeyBean> data) {
         this.num = count;
-        this.data = data;
-
-        //解析数据
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(data);
-            Iterator<String> keys = jsonObject.keys();
-            while (keys.hasNext()) {
-                String key = keys.next();
-                String value = jsonObject.optString(key);
-
-                bean = new KeyBean();
-                bean.setKey(key);
-                bean.setValue(value);
-                list.add(bean);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.e("tag", " ===list====>:" + list.toString());
+        this.list = data;
         notifyDataSetChanged();
     }
 

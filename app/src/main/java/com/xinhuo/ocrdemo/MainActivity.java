@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.mingle.widget.LoadingView;
 import com.xinhuo.ocrdemo.adapter.MyAdapter;
 import com.xinhuo.ocrdemo.adapter.MyWordsBeanAdapter;
+import com.xinhuo.ocrdemo.entity.KeyBean;
 import com.xinhuo.ocrdemo.entity.WordsResult;
 import com.xinhuo.ocrdemo.http.ApiModule;
 import com.xinhuo.ocrdemo.utils.AppUtility;
@@ -32,6 +33,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -54,6 +58,10 @@ public class MainActivity extends Activity {
     private LinearLayout linearLayout;
 
     private boolean isShow = false;
+
+    // 创建容器，将json解析的key和value存入进去
+    KeyBean bean ;
+    private List<KeyBean> list = new ArrayList<>();
 
     private MyAdapter mAdapter;
     private MyWordsBeanAdapter myWordsBeanAdapter;
@@ -161,8 +169,9 @@ public class MainActivity extends Activity {
         Log.i(TAG, "base64Data====:" + base64Data);
         if (!bitmap.isRecycled()) bitmap.recycle();
 
+        // OCR 文字识别
 //        getWordsResult(base64Data1);
-
+        // 身份识别
         getWordsBean(base64Data1);
     }
 
@@ -250,36 +259,44 @@ public class MainActivity extends Activity {
                         int words_result_num = jsonObject.getInt("words_result_num");
                         String words_result = jsonObject.getString("words_result");
 
+//                        int errCode = jsonObject.getInt("errCode");
+//                        Log.e(TAG, " ===errCode====>:" + errCode);
+//                        // 当出现参数缺少等错误，弹出错误信息
+//                        if (errCode != 0) {
+//                            String errInfo = jsonObject.getString("errInfo");
+//                            AppUtility.showToast(MyApp.getContext(), errInfo);
+//                            return;
+//                        }
+
                         if (words_result_num == 0) {
                             AppUtility.showToast(MainActivity.this, "未识别出结果，请重试");
                             return;
                         }
 
-                        myWordsBeanAdapter.setDatas(words_result_num, words_result);
-
                         //解析数据
-//                        jsonObject = new JSONObject(words_result);
-//                        Iterator<String> keys = jsonObject.keys();
-//                        while (keys.hasNext()) {
-//                            String key = keys.next();
-//                            String value = jsonObject.optString(key);
+                        jsonObject = new JSONObject(words_result);
+                        Iterator<String> keys = jsonObject.keys();
+                        while (keys.hasNext()) {
+                            String key = keys.next();
+                            String value = jsonObject.optString(key);
 //                            Log.e("tag", " ===Key====>:" + key + " ===Value====>:" + value);
-//
+                            bean = new KeyBean();
+                            bean.setKey(key);
+                            bean.setValue(value);
+                            list.add(bean);
+
+                            // 通过动态添加控件来显示数据
 //                            TextView textview = new TextView(MainActivity.this);
 //                            textview.setText(key + " ：" + value);
 //                            // 动态添加控件
 //                            linearLayout.addView(textview);
-//                        }
+                        }
+
+                        myWordsBeanAdapter.setDatas(words_result_num, list);
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-//                    // 当出现参数缺少等错误，弹出错误信息
-//                    int errCode = wordsBean.getErrCode();
-//                    if (errCode != 0) {
-//                        String errInfo = wordsBean.getErrInfo();
-//                        AppUtility.showToast(MyApp.getContext(), errInfo);
-//                    }
                 }
             }
 
