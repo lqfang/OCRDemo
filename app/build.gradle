@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.xinhuo.ocrdemo"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -43,5 +43,6 @@ dependencies {
     // 1.6.0 is the main
     implementation 'com.jcodecraeer:xrecyclerview:1.6.0'
     implementation 'com.github.zzz40500:android-shapeLoadingView:1.0.3.2'
+    implementation "com.yanzhikai:TextPathView:0.2.1"
     implementation project(':certificateCamera')
 }

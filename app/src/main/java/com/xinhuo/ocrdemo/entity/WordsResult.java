@@ -91,29 +91,29 @@ public class WordsResult{
                 this.left_top = left_top;
             }
 
-//            @Override
-//            public String toString() {
-//                return "LocaleBean{" +
-//                        "right_bottom='" + right_bottom + '\'' +
-//                        ", left_top='" + left_top + '\'' +
-//                        '}';
-//            }
+            @Override
+            public String toString() {
+                return "LocaleBean{" +
+                        "right_bottom='" + right_bottom + '\'' +
+                        ", left_top='" + left_top + '\'' +
+                        '}';
+            }
         }
 
-//        @Override
-//        public String toString() {
-//            return "WordsResultBean{" +
-//                    "locale='" + locale + '\'' +
-//                    ", words='" + words + '\'' +
-//                    '}';
-//        }
+        @Override
+        public String toString() {
+            return "WordsResultBean{" +
+                    "locale='" + locale + '\'' +
+                    ", words='" + words + '\'' +
+                    '}';
+        }
     }
 
-//    @Override
-//    public String toString() {
-//        return "WordsResult{" +
-//                "words_result_num='" + words_result_num + '\'' +
-//                ", words_result='" + words_result + '\'' +
-//                '}';
-//    }
+    @Override
+    public String toString() {
+        return "WordsResult{" +
+                "words_result_num='" + words_result_num + '\'' +
+                ", words_result='" + words_result + '\'' +
+                '}';
+    }
 }

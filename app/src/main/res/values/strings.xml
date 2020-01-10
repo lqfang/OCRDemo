@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">OCRDemo</string>
+    <string name="splash_hint">Enjoy The OCR of Android</string>
 </resources>

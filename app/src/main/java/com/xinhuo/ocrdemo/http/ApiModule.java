@@ -31,10 +31,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiModule {
 
     // 若下面域名访问不了，两种方法：1换此域名http://192.168.2.132:8081/  2：wifi换xinhuo4G或5G
-    private static String API_1 = "http://60.168.155.150:18081/";
-    private static String API_2 = "http://112.30.110.198:28901/";
-    private static String API_3 = "http://112.30.110.198:40026/";
-    private static final String BASE_URL = "http://112.30.110.198:40026/";
+    private static final String BASE_URL = "http://112.30.110.198:28901/";
 
     private static ApiModule apiHelper;
     private ApiService apiService;

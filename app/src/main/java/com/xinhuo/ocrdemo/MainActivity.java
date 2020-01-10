@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -59,13 +60,18 @@ public class MainActivity extends Activity {
 
     private boolean isShow = false;
 
+    private MyAdapter mAdapter; // OCR的列表适配器（type=0）
+
     // 创建容器，将json解析的key和value存入进去
     KeyBean bean ;
     private List<KeyBean> list = new ArrayList<>();
-
-    private MyAdapter mAdapter;
     private MyWordsBeanAdapter myWordsBeanAdapter;
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    public static void gotoMain(Activity activity) {
+        Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,10 +93,10 @@ public class MainActivity extends Activity {
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new MyAdapter(this);
-//        recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
-        myWordsBeanAdapter = new MyWordsBeanAdapter(this);
-        recyclerView.setAdapter(myWordsBeanAdapter);
+//        myWordsBeanAdapter = new MyWordsBeanAdapter(this);
+//        recyclerView.setAdapter(myWordsBeanAdapter);
 
         // 默认进入打开相机
         isShow = true;
@@ -170,9 +176,9 @@ public class MainActivity extends Activity {
         if (!bitmap.isRecycled()) bitmap.recycle();
 
         // OCR 文字识别
-//        getWordsResult(base64Data1);
+        getWordsResult(base64Data1);
         // 身份识别
-        getWordsBean(base64Data1);
+//        getWordsBean(base64Data1);
     }
 
     /**
@@ -184,12 +190,11 @@ public class MainActivity extends Activity {
         try {
             jsonObject.put("type", "0");
             jsonObject.put("image", img);
-            jsonObject.put("token", "51ec8fd14713eb82193f33859aa4a5e9");
+            jsonObject.put("token", "b4de50360422ccd2a9655cddddc88888");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String stringJson = jsonObject.toString().replace("_", "/");
-        Log.i(TAG, "jsonObject===:" + stringJson);
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), stringJson);
         ApiModule.getInstance().getRetrofitService().getResult(requestBody).enqueue(new Callback<WordsResult>() {
@@ -199,6 +204,7 @@ public class MainActivity extends Activity {
                 Log.e(TAG, " ===response====>:" + response);
                 if (response.code() == 200) {
                     WordsResult wordsResult = response.body();
+                    Log.e(TAG, " ===wordsResult====>:" + wordsResult);
                     // 当出现参数缺少等错误，弹出错误信息
                     int errCode = wordsResult.getErrCode();
                     if (errCode != 0) {
@@ -236,12 +242,11 @@ public class MainActivity extends Activity {
         try {
             jsonObject.put("type", "1");
             jsonObject.put("image", img);
-            jsonObject.put("token", "51ec8fd14713eb82193f33859aa4a5e9");
+            jsonObject.put("token", "b4de50360422ccd2a9655cddddc88888");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         String stringJson = jsonObject.toString().replace("_", "/");
-        Log.i(TAG, "jsonObject====:" + stringJson);
 
         RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), stringJson);
         ApiModule.getInstance().getRetrofitService().getResponseResult(requestBody).enqueue(new Callback<ResponseBody>() {
@@ -258,16 +263,6 @@ public class MainActivity extends Activity {
                         jsonObject = new JSONObject(result);
                         int words_result_num = jsonObject.getInt("words_result_num");
                         String words_result = jsonObject.getString("words_result");
-
-//                        int errCode = jsonObject.getInt("errCode");
-//                        Log.e(TAG, " ===errCode====>:" + errCode);
-//                        // 当出现参数缺少等错误，弹出错误信息
-//                        if (errCode != 0) {
-//                            String errInfo = jsonObject.getString("errInfo");
-//                            AppUtility.showToast(MyApp.getContext(), errInfo);
-//                            return;
-//                        }
-
                         if (words_result_num == 0) {
                             AppUtility.showToast(MainActivity.this, "未识别出结果，请重试");
                             return;
@@ -279,21 +274,12 @@ public class MainActivity extends Activity {
                         while (keys.hasNext()) {
                             String key = keys.next();
                             String value = jsonObject.optString(key);
-//                            Log.e("tag", " ===Key====>:" + key + " ===Value====>:" + value);
                             bean = new KeyBean();
                             bean.setKey(key);
                             bean.setValue(value);
                             list.add(bean);
-
-                            // 通过动态添加控件来显示数据
-//                            TextView textview = new TextView(MainActivity.this);
-//                            textview.setText(key + " ：" + value);
-//                            // 动态添加控件
-//                            linearLayout.addView(textview);
                         }
-
-                        myWordsBeanAdapter.setDatas(words_result_num, list);
-
+//                        myWordsBeanAdapter.setDatas(words_result_num, list);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -342,4 +328,50 @@ public class MainActivity extends Activity {
     }
 
     private static final Charset UTF8 = Charset.forName("UTF-8");
+
+
+    /** 上次点击返回键的时间 */
+    private long lastBackPressed;
+
+    /** 两次点击的间隔时间 */
+    private static final int QUIT_INTERVAL = 2000;
+
+
+    /**
+     * 重写onKeyDown()
+     * @param keyCode
+     * @param event
+     * @return
+     */
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            long backPressed = System.currentTimeMillis();
+            if (backPressed - lastBackPressed > QUIT_INTERVAL) {
+                lastBackPressed = backPressed;
+                AppUtility.showToast(MainActivity.this, "再按一次退出");
+            } else {
+                finish();
+                System.exit(0);
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    /**
+     * 重写onBackPressed()
+     */
+    @Override
+    public void onBackPressed() {
+        long backPressed = System.currentTimeMillis();
+        super.onBackPressed();
+        if (backPressed - lastBackPressed > QUIT_INTERVAL) {
+            lastBackPressed = backPressed;
+            AppUtility.showToast(MainActivity.this, "再按一次退出");
+        } else {
+            finish();
+            System.exit(0);
+        }
+    }
 }
